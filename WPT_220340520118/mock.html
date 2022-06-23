@@ -58,12 +58,12 @@ $(document).ready(function()
 				$("#bookname").val(JSON.stringify(output.bookstatus.bookname));
 				$("#prize").val(JSON.stringify(output.bookstatus.prize));
 
-				// $("#msg").text(
-				// 	JSON.stringify(output.bookstatus.id) + " " 
-				// 	+JSON.stringify(output.bookstatus.bookname) + " " 
-				// 	+ JSON.stringify(output.bookstatus.prize)
+				$("#msg").text(
+					(output.bookstatus.id) + " " 
+					+(output.bookstatus.bookname) + " " 
+					+ (output.bookstatus.prize)
 
-				// );
+				);
 
 				}else{
 				$("#msg1").text("bookid not found");
