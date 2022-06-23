@@ -1,0 +1,151 @@
+<html>
+<body>
+
+	<input id="bookid" placeholder="Book Id">
+	<span id="msg1"></span><br />
+	<input id="bookname" placeholder="Book Name"><br />
+	<input id="prize" placeholder="Prize"><br />
+
+	<button id="btn1">Update</button>
+
+	<hr />
+	<p id="msg"></p>
+<!-- <form action="poc2" method="get">
+<Br/>bookId<input id="bookid" type="text" name="whocares"/>
+<input type="submit" value="get"/>
+</form>
+
+
+<form action="poc1" method="post">
+<Br/>whocares<input type="text" name="whocares"/>
+<input type="submit" value="post"/>
+</form>
+
+<button id="b2"> jquery works</button> -->
+
+
+</body>
+
+<!-- <script src="jquery-3.5.1.min.js"></script> -->
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our scrip will come here 
+
+
+
+$(document).ready(function()
+{
+
+	$("#bookid").disabled = false;
+
+		// setting blur event
+
+	$("#bookid").blur(()=>{
+		let d = $("#bookid").val();
+
+		$("#bookid").disabled = true;
+
+		let ajaxparams = {
+			data:{a: d},
+			url : "http://localhost:100/poc1",
+			datatype : "json",
+			type : "get",
+			success:  (output)=>{
+				if(output.bookstatus){
+					$("#msg1").text("book id Found");
+
+					JSON.stringify(output.bookstatus.prize)
+
+				$("#bookname").val(JSON.stringify(output.bookstatus.bookname));
+				$("#prize").val(JSON.stringify(output.bookstatus.prize));
+
+				// $("#msg").text(
+				// 	JSON.stringify(output.bookstatus.id) + " " 
+				// 	+JSON.stringify(output.bookstatus.bookname) + " " 
+				// 	+ JSON.stringify(output.bookstatus.prize)
+
+				// );
+
+				}else{
+				$("#msg1").text("bookid not found");
+
+				$("#bookname").val("");
+				$("#prize").val("");
+				}
+				
+
+			},
+			error: (err)=>{
+				console.log("error" + err)
+
+			}
+		};
+		$.ajax(ajaxparams);
+
+	})
+
+	$("#btn1").click(()=>{
+		let d = $("#bookid").val();
+		let e = $("#bookname").val();
+		let f = $("#prize").val();
+
+		$("#bookid").disabled = true;
+
+		let ajaxparams = {
+			data:{x: d, y:e, z:f},
+			url : "http://localhost:100/poc2",
+			datatype : "json",
+			type : "get",
+			success:  (output)=>{
+				if(JSON.stringify(output.bookstatus)){
+					$("#msg1").text("prize not Updated");
+
+				// $("#bookname").val(output.bookstatus.bookname);
+				// $("#prize").val(output.bookstatus.prize);
+
+				// $("#msg").text(
+				// 	output.bookstatus.bookid + " " 
+				// 	+ output.bookstatus.bookname + " " 
+				// 	+ output.bookstatus.prize
+
+				// );
+
+				}else{
+				$("#msg1").text("prize got updated");
+				$("#msg").text(
+					output.bookstatus.bookid + " " 
+					+ output.bookstatus.bookname + " " 
+					+ output.bookstatus.prize
+
+				);
+
+				// $("#bookname").val("");
+				// $("#prize").val("");
+				}
+				
+
+			},
+			error: (err)=>{
+				console.log("error" + err)
+
+			}
+		};
+		$.ajax(ajaxparams);
+
+	})
+	
+
+
+		// console.log("no more sins");
+		// $("#b2").click(function () 
+		// 	{ 
+		// 		//console.log("jquery works");
+		// 		alert("jquery works")
+		// 	});
+			
+});
+
+
+</script>
+
+
+</html>
