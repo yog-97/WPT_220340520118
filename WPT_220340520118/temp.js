@@ -1,105 +1,72 @@
-
 const express = require('express');
 const app = express();
-const cors = require('cors');
-app.use(cors());
-
-
-const bodyParser = require('body-parser');
 
 let dbparams = {
-	host: 'localhost',
+    host: 'localhost',
     user: 'root',
     password: 'cdac',
-    database: 'pleasework',
-	port:3306
+    database: 'wpt',
+    port: 3306
 };
 
-const mysql = require("mysql2");
+const mysql = require('mysql2');
 const con = mysql.createConnection(dbparams);
 
-// let bookid = "101";
+app.use(express.static("abc"));
 
 
-
-app.use(express.static('abc'));
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true }));
-//whether you want nested objects support  or not
-
-
-
-app.get('/poc1', function (req, res) {
-		let input = req.query.a;
-		console.log(input);
-		let output = {bookstatus: false};
-	
-		// console.log("reading input " + req.body.v1 +  "  second " + req.body.v2)
-		
-    	// var xyz ={ v1:37, v2:35};
-		con.query("select * from book where bookid = ?", [input], (err, res1) => {
-			// if (err) {
-			// 	result = err;
-			// 	console.log("trouble " + result);
-			// } else{
-			if(res1.length>0){	
-				result = res1;
-				console.log("success" + result)
-				output.bookstatus=true;
-				output.bookstatus= res1;
-			}
-			// console.log(res1[0]);
-			res.send(output);
-			// console.log("38 " + );
-			// res.send(result);
-		});
-       
+app.get("/getbook", (req, resp) => {
+    let input = req.query.x;
+    console.log(input);
+    let output = { bookfoundstatus: false };
+    con.query("select * from book where bookid =?", [input], (error, rows) => {
+        if (rows.length > 0) {
+            console.log("its working");
+            console.log(rows[0]);
+            output.bookfoundstatus = true;
+            output.bookdetails = rows[0];
+        }
+        resp.send(output);
     });
-
-	app.get('/poc2', function (req, res) {
-		let q = req.query.x;
-		let w = req.query.y;
-		let e = req.query.z;
-		console.log(q + "" + w + "" + e);
-		let output = {bookstatus: false};
-	
-		// console.log("reading input " + req.body.v1 +  "  second " + req.body.v2)
-		
-    	// var xyz ={ v1:37, v2:35};
-		con.query("update book set prize=?, where bookid=?", [z,x], (err, res1) => {
-			// if (err) {
-			// 	result = err;
-			// 	console.log("trouble " + result);
-			// } else{
-			if(res1.affectedRows>0){	
-				result = res1[0];
-				console.log("success" + result)
-				output.bookstatus=true;
-				output.bookstatus=res1;
-			}
-			// console.log(res1[0]);
-			res.send(output);
-			// console.log("38 " + );
-			// res.send(result);
-		});
-       
-    });	
+});
 
 
-// app.get('/poc2', function (req, res) {
-    
-	
-//         console.log("reading input " + req.query.xyz);
-		
-//     	var xyz ={ v1:37, v2:35};
+app.get("/add", (req, resp) => {
+    let empno = req.query.a;
+    let ename = req.query.b;
+    let deptno = req.query.c;
+    // let input={itemno:req.query.a,itemname:req.query.b,price:req.query.c};
+    console.log(bookid);
+    let output = { bookfoundstatus: false };
+    con.query("insert into book (bookid,bookname,price) values(?,?,?)",
+        [bookid, bookname, price],
+        (error, rows) => {
+            if (rows.affectedRows > 0) {
+                output.empfoundstatus = true;
+            }
+            resp.send(output);
+        }
+    );
+});
 
-// 		res.send(xyz);
+app.get("/update", (req, resp) => {
+    let empno = req.query.a;
+    let empname = req.query.b;
+    let deptno = req.query.c;
+    let output = { bookfoundstatus: false };
+    con.query(
+        "update book set bookname=?, price=? where bookid=?",
+        [bookname, price, bookid],
+        (error, rows) => {
+            if (rows.affectedRows > 0) {
+                output.bookfoundstatus = true;
+            }
+            resp.send(output);
+        }
+    );
+});
 
-// 		});
 
-
-
-
-app.listen(100, function () {
-    console.log("server listening at port 8081...");
+app.listen(8081, () => {
+    console.log("server!!");
 });
